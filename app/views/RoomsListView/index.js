@@ -62,6 +62,7 @@ class RoomsListView extends React.Component {
 						<CustomHeaderButtons>
 							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearchingAndroid} /> : null}
 							<Item title='new' iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView', { onPressItem })} testID='rooms-list-view-create-channel' />
+							<Item title='links' iconName='permalink' onPress={() => navigation.navigate('QuickLinks')} testID='rooms-list-view-quick-links' />
 						</CustomHeaderButtons>
 					)
 			)

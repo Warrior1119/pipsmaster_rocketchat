@@ -54,7 +54,7 @@ export default StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderColor: COLOR_SEPARATOR,
 		alignItems: 'center',
-		backgroundColor: isIOS ? COLOR_WHITE : '#54585E',
+		backgroundColor: isIOS ? COLOR_WHITE : '#6D1E9B',
 		flexDirection: 'row'
 	},
 	dropdownItemButton: {

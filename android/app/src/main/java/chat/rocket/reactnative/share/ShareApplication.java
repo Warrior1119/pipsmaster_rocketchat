@@ -1,6 +1,6 @@
-package chat.rocket.reactnative.share;
+package com.pipsmaster.app.share;
 
-import chat.rocket.reactnative.BuildConfig;
+import com.pipsmaster.app.BuildConfig;
 
 import chat.rocket.SharePackage;
 

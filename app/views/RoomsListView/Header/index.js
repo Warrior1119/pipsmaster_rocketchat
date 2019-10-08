@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
-	toggleServerDropdown, closeServerDropdown, closeSortDropdown, setSearch as setSearchAction
+	closeSortDropdown, setSearch as setSearchAction
 } from '../../../actions/rooms';
 import Header from './Header';
 
@@ -71,8 +71,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchtoProps = dispatch => ({
-	close: () => dispatch(closeServerDropdown()),
-	open: () => dispatch(toggleServerDropdown()),
+	close: () => false, // dispatch(closeServerDropdown()),
+	open: () => false, // dispatch(toggleServerDropdown()),
 	closeSort: () => dispatch(closeSortDropdown()),
 	setSearch: searchText => dispatch(setSearchAction(searchText))
 });

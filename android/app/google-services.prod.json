@@ -35,7 +35,7 @@
               "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "chat.rocket.reactnative"
+                "bundle_id": "com.pipsmaster.app"
               }
             }
           ]
@@ -87,7 +87,7 @@
               "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "chat.rocket.reactnative"
+                "bundle_id": "com.pipsmaster.app"
               }
             }
           ]
@@ -139,7 +139,7 @@
               "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "chat.rocket.reactnative"
+                "bundle_id": "com.pipsmaster.app"
               }
             }
           ]
@@ -150,7 +150,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:673693445664:android:8be27b1f7c42a2ed",
         "android_client_info": {
-          "package_name": "chat.rocket.reactnative"
+          "package_name": "com.pipsmaster.app"
         }
       },
       "oauth_client": [
@@ -175,7 +175,7 @@
               "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "chat.rocket.reactnative"
+                "bundle_id": "com.pipsmaster.app"
               }
             }
           ]
@@ -219,7 +219,7 @@
               "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "chat.rocket.reactnative"
+                "bundle_id": "com.pipsmaster.app"
               }
             }
           ]

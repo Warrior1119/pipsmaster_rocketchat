@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import { analytics } from '../utils/log';
 
+import { serverRequest } from '../actions/server';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -44,7 +45,8 @@ class LoginView extends React.Component {
 		Accounts_PasswordPlaceholder: PropTypes.string,
 		Accounts_PasswordReset: PropTypes.bool,
 		isFetching: PropTypes.bool,
-		failure: PropTypes.bool
+		failure: PropTypes.bool,
+		connectServer: PropTypes.func.isRequired
 	}
 
 	static defaultProps = {
@@ -61,6 +63,9 @@ class LoginView extends React.Component {
 		};
 		const { Site_Name } = this.props;
 		this.setTitle(Site_Name);
+		// connect to server
+		const { connectServer } = this.props;
+		connectServer('https://pipstime.stg.tradersgemini.com');
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -72,11 +77,14 @@ class LoginView extends React.Component {
 				LayoutAnimation.easeInEaseOut();
 				this.setState({ showTOTP: true });
 				return;
-			} else if (nextProps.error && nextProps.error.error === 'no-subscription') {
+			} else if (nextProps.error && nextProps.error.errorType === 'no-subscription') {
 				Alert.alert(I18n.t('Oops'), I18n.t('No_subscription'));
 				return;
-			} else if (nextProps.error && nextProps.error.error === 'subscription-expired') {
+			} else if (nextProps.error && nextProps.error.errorType === 'subscription-expired') {
 				Alert.alert(I18n.t('Oops'), I18n.t('Subscription_expired'));
+				return;
+			} else if (nextProps.error && nextProps.error.errorType === 'no-customer-email') {
+				Alert.alert(I18n.t('Oops'), I18n.t('Error_no_customer_email'));
 				return;
 			}
 			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
@@ -156,7 +164,7 @@ class LoginView extends React.Component {
 	}
 
 	forgotPassword = () => {
-		Linking.openURL('https://xbackoffice.thinkmelius.com/common/help/ResetPassword.aspx');
+		Linking.openURL('https://my.thinkmelius.com/forgotpassword');
 		// const { navigation, Site_Name } = this.props;
 		// navigation.navigate('ForgotPasswordView', { title: Site_Name });
 	}
@@ -267,7 +275,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
+	loginRequest: params => dispatch(loginRequestAction(params)),
+	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginView);

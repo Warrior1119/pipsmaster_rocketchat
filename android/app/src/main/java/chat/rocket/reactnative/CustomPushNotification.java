@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package com.pipsmaster.app;
 
 import android.app.Notification;
 import android.app.NotificationChannel;

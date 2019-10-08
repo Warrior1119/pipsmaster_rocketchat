@@ -46,6 +46,9 @@ const styles = StyleSheet.create({
 		color: COLOR_DANGER,
 		borderColor: COLOR_DANGER
 	},
+	inputDisable: {
+		backgroundColor: COLOR_BORDER
+	},
 	wrap: {
 		position: 'relative'
 	},
@@ -78,11 +81,13 @@ export default class RCTextInput extends React.PureComponent {
 		inputRef: PropTypes.func,
 		testID: PropTypes.string,
 		iconLeft: PropTypes.string,
-		placeholder: PropTypes.string
+		placeholder: PropTypes.string,
+		disable: PropTypes.object
 	}
 
 	static defaultProps = {
-		error: {}
+		error: {},
+		disable: {}
 	}
 
 	state = {
@@ -123,7 +128,7 @@ export default class RCTextInput extends React.PureComponent {
 	render() {
 		const { showPassword } = this.state;
 		const {
-			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, ...inputProps
+			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, disable, ...inputProps
 		} = this.props;
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
@@ -133,6 +138,7 @@ export default class RCTextInput extends React.PureComponent {
 						style={[
 							styles.input,
 							error.error && styles.inputError,
+							disable.active && styles.inputDisable,
 							inputStyle,
 							iconLeft && styles.inputIconLeft,
 							secureTextEntry && styles.inputIconRight

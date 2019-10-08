@@ -1,12 +1,9 @@
-import { AsyncStorage, InteractionManager, Alert } from 'react-native';
+import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
 import * as FileSystem from 'expo-file-system';
-//
-import md5 from 'md5';
-import I18n from '../i18n';
-//
+
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
@@ -257,7 +254,7 @@ const RocketChat = {
 			username: user.username
 		}));
 
-		await RocketChat.loginRC({ resume: user.token });
+		await RocketChat.login({ resume: user.token });
 	},
 
 	register(credentials) {
@@ -319,84 +316,38 @@ const RocketChat = {
 
 	async login(params) {
 		if (params.user && params.password) {
-			let response = null;
 			try {
-				const passValue = md5(params.password);
-				response = await fetch(`http://xwebservices.thinkmelius.com/Thirdparty/Services.svc/_3PartyAuthGet?username=${ params.user }&password=${ passValue }&returnType=2&partyToken=586972656374242432303139212E`, {
-					method: 'GET'
-				});
-			} catch (error) {
-				// Fetch API call error
-				Alert.alert(I18n.t('Oops'), error.toString());
-			}
-			if (response) {
-				const responseJson = await response.json();
-				if (responseJson.Result === 'Ok') {
-					if (responseJson.Data && responseJson.Data.HasSubscription) {
-						if (new Date(responseJson.Data.Endsubscription) > new Date()) {
-							try {
-								const userData = {
-									name: responseJson.Data.firstname,
-									username: responseJson.Data.username,
-									email: responseJson.Data.email,
-									pass: params.password
-								};
-								await RocketChat.register(userData);
-								await RocketChat.loginRC(params);
-								return true;
-							} catch (e) {
-								// alert(JSON.stringify(e));
-								if (e && e.data && e.data.error === 'Username is already in use') {
-									await RocketChat.loginRC(params);
-									return true;
-								} else {
-									reduxStore.dispatch(loginFailure({ status: 401, data: e.data }));
-								}
-							}
-						} else {
-							const data = { status: 'error', error: 'subscription-expired', message: 'Subscription is expired' };
-							reduxStore.dispatch(loginFailure({ status: 401, data }));
-						}
-					} else {
-						const data = { status: 'error', error: 'no-subscription', message: 'No subscription' };
-						reduxStore.dispatch(loginFailure({ status: 401, data }));
-					}
-				} else {
-					const data = { status: 'error', error: 'Unauthorized', message: 'Unauthorized' };
-					reduxStore.dispatch(loginFailure({ status: 401, data }));
-				}
-			} else {
-				const data = { status: 'error', error: 'Unauthorized', message: 'Unauthorized' };
-				reduxStore.dispatch(loginFailure({ status: 401, data }));
+				const result = await this.sdk.post('users.pipsLogin', params, false);
+				reduxStore.dispatch(loginRequest({ resume: result.authToken }));
+			} catch (e) {
+				reduxStore.dispatch(loginFailure(e));
+				throw e;
 			}
 		} else {
-			await RocketChat.loginRC(params);
-		}
-	},
-	async loginRC(params) {
-		try {
-			// RC 0.64.0
-			await this.sdk.login(params);
-			const { result } = this.sdk.currentLogin;
-			const user = {
-				id: result.userId,
-				token: result.authToken,
-				username: result.me.username,
-				name: result.me.name,
-				language: result.me.language,
-				status: result.me.status,
-				customFields: result.me.customFields,
-				emails: result.me.emails,
-				roles: result.me.roles
-			};
-			return user;
-		} catch (e) {
-			if (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message)) {
-				reduxStore.dispatch(logout({ server: this.sdk.client.host }));
-			} else {
-				reduxStore.dispatch(loginFailure(e));
+			try {
+				// RC 0.64.0
+				await this.sdk.login(params);
+				const { result } = this.sdk.currentLogin;
+				const user = {
+					id: result.userId,
+					token: result.authToken,
+					username: result.me.username,
+					name: result.me.name,
+					language: result.me.language,
+					status: result.me.status,
+					customFields: result.me.customFields,
+					emails: result.me.emails,
+					roles: result.me.roles
+				};
+				return user;
+			} catch (e) {
+				if (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message)) {
+					reduxStore.dispatch(logout({ server: this.sdk.client.host }));
+				} else {
+					reduxStore.dispatch(loginFailure(e));
+				}
+				throw e;
 			}
-			throw e;
 		}
 	},
 	async logout({ server }) {

@@ -38,18 +38,19 @@ const parseDeepLinking = (url) => {
 
 // Outside
 const OutsideStack = createStackNavigator({
-	OnboardingView: {
-		getScreen: () => require('./views/OnboardingView').default,
-		header: null
-	},
-	NewServerView: {
-		getScreen: () => require('./views/NewServerView').default
-	},
-	LoginSignupView: {
-		getScreen: () => require('./views/LoginSignupView').default
-	},
+	// OnboardingView: {
+	// 	getScreen: () => require('./views/OnboardingView').default,
+	// 	header: null
+	// },
+	// NewServerView: {
+	// 	getScreen: () => require('./views/NewServerView').default
+	// },
+	// LoginSignupView: {
+	// 	getScreen: () => require('./views/LoginSignupView').default
+	// },
 	LoginView: {
-		getScreen: () => require('./views/LoginView').default
+		getScreen: () => require('./views/LoginView').default,
+		header: null
 	},
 	ForgotPasswordView: {
 		getScreen: () => require('./views/ForgotPasswordView').default
@@ -85,6 +86,9 @@ const OutsideStackModal = createStackNavigator({
 const ChatsStack = createStackNavigator({
 	RoomsListView: {
 		getScreen: () => require('./views/RoomsListView').default
+	},
+	QuickLinks: {
+		getScreen: () => require('./views/QuickLinks').default
 	},
 	RoomView: {
 		getScreen: () => require('./views/RoomView').default

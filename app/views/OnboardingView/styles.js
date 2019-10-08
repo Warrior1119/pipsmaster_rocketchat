@@ -41,7 +41,7 @@ export default StyleSheet.create({
 	subtitle: {
 		...sharedStyles.textRegular,
 		fontSize: moderateScale(16),
-		color: '#54585E',
+		color: '#6D1E9B',
 		alignSelf: 'center'
 	},
 	buttonsContainer: {

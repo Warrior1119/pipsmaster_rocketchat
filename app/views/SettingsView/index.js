@@ -15,7 +15,8 @@ import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import { MARKDOWN_KEY, CRASH_REPORT_KEY } from '../../lib/rocketchat';
-import { getReadableVersion, getDeviceModel, isAndroid } from '../../utils/deviceInfo';
+// import { getReadableVersion, getDeviceModel, isAndroid } from '../../utils/deviceInfo';
+import { isAndroid } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert } from '../../utils/info';
@@ -75,16 +76,17 @@ class SettingsView extends React.Component {
 	}
 
 	sendEmail = async() => {
-		const subject = encodeURI('React Native App Support');
-		const email = encodeURI('support@rocket.chat');
-		const description = encodeURI(`
-			version: ${ getReadableVersion }
-			device: ${ getDeviceModel }
-		`);
+		// const subject = encodeURI('React Native App Support');
+		// const email = encodeURI('support@rocket.chat');
+		// const description = encodeURI(`
+		// 	version: ${ getReadableVersion }
+		// 	device: ${ getDeviceModel }
+		// `);
 		try {
-			await Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
+			await Linking.openURL('http://support.thinkmelius.com/');
+			// await Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
 		} catch (e) {
-			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@rocket.chat' }));
+			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@thinkmelius.com' }));
 		}
 	}
 
@@ -119,7 +121,7 @@ class SettingsView extends React.Component {
 	}
 
 	render() {
-		const { server } = this.props;
+		// const { server } = this.props;
 		return (
 			<SafeAreaView style={sharedStyles.listSafeArea} testID='settings-view'>
 				<StatusBar />
@@ -162,7 +164,7 @@ class SettingsView extends React.Component {
 
 					<SectionSeparator />
 
-					<ListItem
+					{/* <ListItem
 						title={I18n.t('License')}
 						onPress={this.onPressLicense}
 						showActionIndicator
@@ -178,7 +180,7 @@ class SettingsView extends React.Component {
 						testID='settings-view-server-version'
 					/>
 
-					<SectionSeparator />
+					<SectionSeparator /> */}
 
 					<ListItem
 						title={I18n.t('Enable_markdown')}

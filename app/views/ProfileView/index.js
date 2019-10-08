@@ -48,7 +48,6 @@ class ProfileView extends React.Component {
 		name: null,
 		username: null,
 		email: null,
-		newPassword: null,
 		currentPassword: null,
 		avatarUrl: null,
 		avatar: {},
@@ -69,7 +68,7 @@ class ProfileView extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		const { user } = this.props;
-		if (user !== nextProps.user) {
+		if (user && nextProps.user && user.id !== nextProps.user.id) {
 			this.init(nextProps.user);
 		}
 	}
@@ -98,7 +97,6 @@ class ProfileView extends React.Component {
 			name,
 			username,
 			email: emails ? emails[0].address : null,
-			newPassword: null,
 			currentPassword: null,
 			avatarUrl: null,
 			avatar: {},
@@ -108,7 +106,7 @@ class ProfileView extends React.Component {
 
 	formIsChanged = () => {
 		const {
-			name, username, email, newPassword, avatar, customFields
+			name, username, email, avatar, customFields
 		} = this.state;
 		const { user } = this.props;
 		let customFieldsChanged = false;
@@ -124,7 +122,6 @@ class ProfileView extends React.Component {
 
 		return !(user.name === name
 			&& user.username === username
-			&& !newPassword
 			&& (user.emails && user.emails[0].address === email)
 			&& !avatar.data
 			&& !customFieldsChanged
@@ -156,7 +153,7 @@ class ProfileView extends React.Component {
 		this.setState({ saving: true });
 
 		const {
-			name, username, email, newPassword, currentPassword, avatar, customFields
+			name, username, email, currentPassword, avatar, customFields
 		} = this.state;
 		const { user, setUser } = this.props;
 		const params = {};
@@ -176,17 +173,12 @@ class ProfileView extends React.Component {
 			params.email = email;
 		}
 
-		// newPassword
-		if (newPassword) {
-			params.newPassword = newPassword;
-		}
-
 		// currentPassword
 		if (currentPassword) {
 			params.currentPassword = SHA256(currentPassword);
 		}
 
-		const requirePassword = !!params.email || newPassword;
+		const requirePassword = !!params.email;
 		if (requirePassword && !params.currentPassword) {
 			return this.setState({ showPasswordAlert: true, saving: false });
 		}
@@ -364,10 +356,10 @@ class ProfileView extends React.Component {
 
 	render() {
 		const {
-			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert
+			name, username, email, avatar, saving, showPasswordAlert
 		} = this.state;
 		const { baseUrl, user } = this.props;
-
+		const disableInput = { active: true };
 		return (
 			<KeyboardView
 				contentContainerStyle={sharedStyles.container}
@@ -407,6 +399,8 @@ class ProfileView extends React.Component {
 							onChangeText={value => this.setState({ username: value })}
 							onSubmitEditing={() => { this.email.focus(); }}
 							testID='profile-view-username'
+							disable={disableInput}
+							editable={false}
 						/>
 						<RCTextInput
 							inputRef={(e) => { this.email = e; }}
@@ -414,26 +408,12 @@ class ProfileView extends React.Component {
 							placeholder={I18n.t('Email')}
 							value={email}
 							onChangeText={value => this.setState({ email: value })}
-							onSubmitEditing={() => { this.newPassword.focus(); }}
 							testID='profile-view-email'
-						/>
-						<RCTextInput
-							inputRef={(e) => { this.newPassword = e; }}
-							label={I18n.t('New_Password')}
-							placeholder={I18n.t('New_Password')}
-							value={newPassword}
-							onChangeText={value => this.setState({ newPassword: value })}
-							onSubmitEditing={() => {
-								if (Object.keys(customFields).length) {
-									return this[Object.keys(customFields)[0]].focus();
-								}
-								this.avatarUrl.focus();
-							}}
-							secureTextEntry
-							testID='profile-view-new-password'
+							disable={disableInput}
+							editable={false}
 						/>
 						{this.renderCustomFields()}
-						<RCTextInput
+						{/* <RCTextInput
 							inputRef={(e) => { this.avatarUrl = e; }}
 							label={I18n.t('Avatar_Url')}
 							placeholder={I18n.t('Avatar_Url')}
@@ -441,7 +421,7 @@ class ProfileView extends React.Component {
 							onChangeText={value => this.setState({ avatarUrl: value })}
 							onSubmitEditing={this.submit}
 							testID='profile-view-avatar-url'
-						/>
+						/> */}
 						{this.renderAvatarButtons()}
 						<Button
 							title={I18n.t('Save_Changes')}

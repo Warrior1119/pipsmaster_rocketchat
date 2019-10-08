@@ -28,7 +28,7 @@ export default StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderColor: COLOR_SEPARATOR,
 		alignItems: 'center',
-		backgroundColor: isIOS ? COLOR_WHITE : '#54585E',
+		backgroundColor: isIOS ? COLOR_WHITE : '#6D1E9B',
 		flexDirection: 'row'
 	},
 	sortToggleContainerClose: {
@@ -86,7 +86,7 @@ export default StyleSheet.create({
 		backgroundColor: isIOS ? COLOR_WHITE : '#9ea2a8'
 	},
 	groupTitle: {
-		color: isIOS ? COLOR_TEXT : '#54585E',
+		color: isIOS ? COLOR_TEXT : '#6D1E9B',
 		fontSize: isIOS ? 22 : 15,
 		letterSpacing: 0.27,
 		flex: 1,

@@ -12,7 +12,7 @@ import sharedStyles from '../views/Styles';
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: isIOS ? '#F7F8FA' : '#54585E',
+		backgroundColor: isIOS ? '#F7F8FA' : '#6D1E9B',
 		flexDirection: 'row',
 		alignItems: 'center',
 		flex: 1
