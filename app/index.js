@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
+import OneSignal from 'react-native-onesignal';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -19,6 +20,7 @@ import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
+
 
 useScreens();
 
@@ -269,6 +271,12 @@ export default class Root extends React.Component {
 		super(props);
 		this.init();
 		this.initCrashReport();
+
+		OneSignal.init('ec3c2093-9e9b-47c6-8854-da21b7c9eb99');
+
+		OneSignal.addEventListener('received', this.onReceived);
+		OneSignal.addEventListener('opened', this.onOpened);
+		OneSignal.addEventListener('ids', this.onIds);
 	}
 
 	componentDidMount() {
@@ -283,7 +291,26 @@ export default class Root extends React.Component {
 	}
 
 	componentWillUnmount() {
+		OneSignal.removeEventListener('received', this.onReceived);
+		OneSignal.removeEventListener('opened', this.onOpened);
+		OneSignal.removeEventListener('ids', this.onIds);
+
 		clearTimeout(this.listenerTimeout);
+	}
+
+	static onReceived(notification) {
+		console.log('Notification received: ', notification);
+	}
+
+	static onOpened(openResult) {
+		console.log('Message: ', openResult.notification.payload.body);
+		console.log('Data: ', openResult.notification.payload.additionalData);
+		console.log('isActive: ', openResult.notification.isAppInFocus);
+		console.log('openResult: ', openResult);
+	}
+
+	static onIds(device) {
+		console.log('Device info: ', device);
 	}
 
 	init = async() => {

@@ -90,7 +90,7 @@ class OnboardingView extends React.Component {
 
 	connectServer = () => {
 		// this.newServer();
-		this.newServer('https://pipstime.stg.tradersgemini.com');
+		this.newServer('https://pipsmasters.com');
 	}
 
 	joinCommunity = () => {

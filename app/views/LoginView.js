@@ -65,7 +65,7 @@ class LoginView extends React.Component {
 		this.setTitle(Site_Name);
 		// connect to server
 		const { connectServer } = this.props;
-		connectServer('https://pipstime.stg.tradersgemini.com');
+		connectServer('https://pipsmasters.com');
 	}
 
 	componentWillReceiveProps(nextProps) {
